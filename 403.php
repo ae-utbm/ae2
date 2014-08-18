@@ -54,7 +54,7 @@ $app->get('/', function (Request $request) use ($app) {
 
   $site->end_page();
 
-  return new Response(ob_get_clean());
+  return new Response(ob_get_clean(), 403);
 });
 
 $app->run();
