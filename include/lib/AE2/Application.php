@@ -77,7 +77,7 @@ class Application extends Silex\Application
 		});
 	}
 
-	public static function check_user_id_valid (Request $request)
+	public static function check_user_is_valid (Request $request)
 	{
 	        $site = $request->attributes->get('site');
 
