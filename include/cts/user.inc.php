@@ -187,7 +187,7 @@ class userinfo extends stdcontents
       if ( $user->tel_maison )
         $this->buffer .= "<img src=\"/images/usr_fixe.png\" width=\"18\" height=\"16\" style=\"margin-right: 0.5em;\">".telephone_display($user->tel_maison);
       if ( $user->tel_portable )
-        $this->buffer .= "<br><img src=\"§/images/usr_portable.png\" style=\"margin-right: 0.5em;\">".telephone_display($user->tel_portable);
+        $this->buffer .= "<br><img src=\"/images/usr_portable.png\" style=\"margin-right: 0.5em;\">".telephone_display($user->tel_portable);
       $this->buffer .= "</div>";
       $this->buffer .= "<div class=\"mails\" style=\"position: relative; float: right; margin-top: 14px;\">";
       if ( $user->email || $user->email_utbm )
