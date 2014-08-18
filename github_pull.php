@@ -35,7 +35,7 @@ $app->post('/', function (Request $request) use ($app) {
     foreach ($commands as $cmd) {
       exec($cmd, $output, $return_value);
 
-      $buffer  .= implode($output) . "\n";
+      $buffer  .= implode("\n", $output) . "\n";
       $success &= ($return_value == 0);
 
       if (!$success) {
