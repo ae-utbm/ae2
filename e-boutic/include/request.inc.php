@@ -10,6 +10,7 @@
  */
 
 require_once ("e-boutic.inc.php");
+require_once ($topdir."/config.php");
 
 
 $location = "/usr/share/php5/sogenactif/";
@@ -86,7 +87,7 @@ class request
     // PRODUCTION : le parametre ci-dessous identifie l'AE en tant que
     //commercant aupres de la sogé.
     if (STO_PRODUCTION == true)
-      $parm ="merchant_id=__ID_SOGE__";
+      $parm ="merchant_id=" . EBOUTIC_MERCHANT_ID;
 
     //Serveurs de tests / marchand bidon
     // toutefois, le numero ci-apres a son importance, et il est bien

@@ -27,6 +27,7 @@
 
 require_once($topdir . "include/entities/pays.inc.php");
 require_once($topdir . "include/entities/ville.inc.php");
+require_once($topdir . "/config.php");
 /**
  * Permet d'afficher un carte (de goolge maps).
  *
@@ -39,7 +40,7 @@ class gmap extends stdcontents
   var $uid;
 
   /* google map api key */
-  var $key = "__GMAP_KEY__";
+  var $key = GMAP_API_KEY;
 
   var $markers = array();
   var $paths   = array();

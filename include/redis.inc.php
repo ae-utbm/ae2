@@ -21,11 +21,13 @@
  * 02111-1307, USA.
  */
 
+require_once ($topdir."/config.php");
+
 function redis_open_connection ()
 {
     $redis = new Redis ();
-    $redis->pconnect ('192.168.2.219');
-    $redis->auth ('mdp_redis');
+    $redis->pconnect (REDIS_HOSTNAME);
+    $redis->auth (REDIS_PASSWORD);
     return $redis;
 }
 

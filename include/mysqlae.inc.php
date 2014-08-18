@@ -48,20 +48,22 @@ if( !preg_match('/^\/var\/www\/(taiste|ae2)\//', $_SERVER['SCRIPT_FILENAME'])
 }
 else
 {
+  require_once ($topdir."/config.php");
+
   /** Classe permettant de se connecter à la base de l'ae. Permet de
     créer une base qui se connecte sur la base de l'ae. En passant en
     paramètre "rw", on obtient une base en lecture écriture pour tout
     autre paramètre, la base est en lecture seule. */
   class mysqlae extends mysql {
 
-    public static $host = 'host';
-    public static $database = 'database';
+    public static $host = MYSQL_AE_HOSTNAME;
+    public static $database = MYSQL_AE_DATABASE;
 
-    public static $login_read_write = 'login_read_write';
-    public static $mdp_read_write = 'mdp_read_write';
+    public static $login_read_write = MYSQL_AE_RW_USERNAME;
+    public static $mdp_read_write = MYSQL_AE_RW_PASSWORD;
 
-    public static $login_read_only = 'login_read_only';
-    public static $mdp_read_only = 'mdp_read_only';
+    public static $login_read_only = MYSQL_AE_RO_USERNAME;
+    public static $mdp_read_only = MYSQL_AE_RO_PASSWORD;
 
     function mysqlae ($type = "ro") {
       if ($type == "rw") {
@@ -81,7 +83,7 @@ else
     function mysqlforum ()
     {
       // Tschuut on a rien vu ...
-      if ( ! self::$mysql('importforum', 'importequoi', 'host', 'UTBM'))
+      if ( ! self::$mysql(MYSQL_FORUM_USERNAME, MYSQL_FORUM_PASSWORD, MYSQL_FORUM_HOSTNAME, MYSQL_FORUM_DATABASE))
         return FALSE;
     }
   }

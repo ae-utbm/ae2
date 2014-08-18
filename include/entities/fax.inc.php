@@ -25,6 +25,8 @@
  *
  */
 
+require_once ($topdir."/config.php");
+
 /**
  * Envoie et archivage de fax
  * @author Pierre Mauduit
@@ -53,8 +55,8 @@ class fax extends stdentity
   var $numdest;
 
   /* les identifiants freebox de l'AE */
-  var $login = "__LOGIN_FREEBOX__";
-  var $pass = "__MDP_FREEBOX__";
+  var $login = FREEBOX_USERNAME;
+  var $pass = FREEBOX_PASSWORD;
 
   /* identifiant de l'utilisateur faisant la demande */
   var $id_utilisateur;
