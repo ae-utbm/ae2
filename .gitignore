@@ -1,0 +1,13 @@
+/xdebug
+
+## Vagrant
+.vagrant
+Vagrantfile
+
+## Composer
+/composer.lock
+/composer.phar
+
+## Site AE
+config.php
+include/mysqlae_home.inc.php
