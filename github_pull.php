@@ -25,7 +25,6 @@ $app->post('/', function (Request $request) use ($app) {
     }
 
     $commands = array(
-      "git --git-dir=" . __DIR__ . "/.git/ reset --hard HEAD",
       "git --git-dir=" . __DIR__ . "/.git/ pull origin master",
     );
 
