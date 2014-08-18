@@ -1,6 +1,7 @@
 {
     "name": "ae/ae2",
     "type": "project",
+    "description": "Site de l'Association des Etudiants de l'Universite de Technologie de Belfort-Montbeliard",
     "require": {
         "php": ">=5.3.3",
         "silex/silex": "~1.1",
@@ -25,6 +26,6 @@
         "swiftmailer/swiftmailer": "5.*"
     },
     "autoload": {
-        "psr-0": { "": "" }
+        "psr-4": { "AE2\\": "include/lib/" }
     }
 }

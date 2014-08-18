@@ -22,10 +22,7 @@
  * 02111-1307, USA.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
-
-use Silex\Application;
-use Silex\Provider;
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,21 +32,10 @@ require_once __DIR__ . "/forms.php";
 
 $topdir = __DIR__ . "/../";
 
-require_once __DIR__ . "/../include/site.inc.php";
 require_once __DIR__ . "/../include/mysqlae.inc.php";
 require_once __DIR__ . "/../include/cts/user.inc.php";
 require_once __DIR__ . "/../include/cts/special.inc.php";
 require_once __DIR__ . "/../include/genealogie.inc.php";
-
-require_once __DIR__ . "/../include/lib/serviceprovider/PhpRendererServiceProvider.php";
-
-function check_user_is_valid(Request $request) {
-  $site = $request->attributes->get('site');
-
-  if (!$site->user->is_valid()) {
-    return new RedirectResponse('/connexion.php?redirect_to=' . urlencode($request->getUri()));
-  }
-}
 
 function check_user_is_ae_or_utbm(Request $request) {
   $site = $request->attributes->get('site');
@@ -59,41 +45,7 @@ function check_user_is_ae_or_utbm(Request $request) {
   }
 }
 
-$app = new Silex\Application();
-$app['debug'] = true;
-
-$app->register(new Provider\DoctrineServiceProvider(), array(
-  'db.options' => array(
-    'driver'   => 'pdo_mysql',
-    'dbname'   => mysqlae::$database,
-    'host'     => mysqlae::$host,
-    'user'     => mysqlae::$login_read_only,
-    'password' => mysqlae::$mdp_read_only,
-  ),
-));
-
-$app->register(new Provider\ServiceControllerServiceProvider());
-$app->register(new Provider\TwigServiceProvider());
-$app->register(new Provider\UrlGeneratorServiceProvider());
-
-$app->register(new Provider\WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => '/tmp/profiler',
-    'profiler.mount_prefix' => '/_profiler', // this is the default
-));
-
-$app->register(new Provider\PhpRendererServiceProvider());
-
-$app->before(function (Request $request) {
-  $request->attributes->set('site', new site());
-}, Application::EARLY_EVENT);
-
-$app->error(function (\Exception $e, $code) use ($app) {
-    if ($app['debug']) {
-        return;
-    }
-
-    return new Response($code);
-});
+$app = new AE2\Application(true);
 
 $app->get('/', function(Request $request) use ($app) {
   $site = $request->attributes->get('site');
@@ -111,7 +63,7 @@ $app->get('/', function(Request $request) use ($app) {
           get_rechercheparville_form($site))
       )
     ));
-})->before('check_user_is_valid')
+})->before('AE2\Application::check_user_is_valid')
   ->before('check_user_is_ae_or_utbm');
 
 $app->get('/recherche-{mode}', function(Request $request, $mode) use ($app) {
@@ -276,7 +228,7 @@ $app->get('/recherche-{mode}', function(Request $request, $mode) use ($app) {
     ))
   );
 })->value('mode', 'default')
-  ->before('check_user_is_valid')
+  ->before('AE2\Application::check_user_is_valid')
   ->before('check_user_is_ae_or_utbm');
 
 $app->get('/famille/{user_id}', function(Request $request, $user_id) use ($app) {
@@ -351,7 +303,7 @@ $app->get('/vcf/{user_id}', function(Request $request, $user_id) use ($app) {
   );
 
   return $response;
-})->before('check_user_is_valid')
+})->before('AE2\Application::check_user_is_valid')
   ->before('check_user_is_ae_or_utbm')
   ->convert('user_id', function($user_id) { return intval($user_id); });
 

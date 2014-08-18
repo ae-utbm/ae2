@@ -24,10 +24,7 @@
  * 02111-1307, USA.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
-
-use Silex\Application;
-use Silex\Provider;
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,19 +34,8 @@ require_once __DIR__ . "/forms.php";
 
 $topdir = __DIR__ . "/../";
 
-require_once __DIR__ . "/../include/site.inc.php";
 require_once __DIR__ . "/../include/cts/sqltable.inc.php";
 require_once __DIR__ . "/../include/cts/user.inc.php";
-
-require_once __DIR__ . "/../include/lib/serviceprovider/PhpRendererServiceProvider.php";
-
-function check_user_is_valid(Request $request) {
-  $site = $request->attributes->get('site');
-
-  if (!$site->user->is_valid()) {
-    return new RedirectResponse('/connexion.php?redirect_to=' . urlencode($request->getUri()));
-  }
-}
 
 function check_user_is_gestion_ae_or_gestion_fimu(Request $request) {
   $site = $request->attributes->get('site');
@@ -59,41 +45,7 @@ function check_user_is_gestion_ae_or_gestion_fimu(Request $request) {
   }
 }
 
-$app = new Silex\Application();
-$app['debug'] = true;
-
-$app->register(new Provider\DoctrineServiceProvider(), array(
-    'db.options' => array(
-        'driver'   => 'pdo_mysql',
-        'dbname'   => mysqlae::$database,
-        'host'     => mysqlae::$host,
-        'user'     => mysqlae::$login_read_only,
-        'password' => mysqlae::$mdp_read_only,
-    ),
-));
-
-$app->register(new Provider\ServiceControllerServiceProvider());
-$app->register(new Provider\TwigServiceProvider());
-$app->register(new Provider\UrlGeneratorServiceProvider());
-
-$app->register(new Provider\WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => '/tmp/profiler',
-    'profiler.mount_prefix' => '/_profiler', // this is the default
-));
-
-$app->register(new Provider\PhpRendererServiceProvider());
-
-$app->before(function (Request $request) {
-  $request->attributes->set('site', new site());
-}, Application::EARLY_EVENT);
-
-$app->error(function (\Exception $e, $code) use ($app) {
-    if ($app['debug']) {
-        return;
-    }
-
-    return new Response($code);
-});
+$app = new AE2\Application(true);
 
 $app->get('/', function(Request $request) use ($app) {
   $site = $request->attributes->get('site');
@@ -177,7 +129,7 @@ $app->post('/inscription', function(Request $request) use ($app) {
       )
     );
   }
-})->before('check_user_is_valid');
+})->before('AE2\Application::check_user_is_valid');
 
 $app->get('/inscription', function(Request $request) use ($app) {
   return new Response(
@@ -188,7 +140,7 @@ $app->get('/inscription', function(Request $request) use ($app) {
       )
     )
   );
-})->before('check_user_is_valid');
+})->before('AE2\Application::check_user_is_valid');
 
 
 
@@ -237,7 +189,7 @@ $app->get('/liste', function(Request $request) use ($app) {
       )
     )
   );
-})->before('check_user_is_valid')
+})->before('AE2\Application::check_user_is_valid')
   ->before('check_user_is_gestion_ae_or_gestion_fimu');
 
 $app->run();

@@ -5,17 +5,7 @@ require_once __DIR__.'/vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-$app = new Silex\Application();
-$app['debug'] = false;
-
-$app->register(new Provider\ServiceControllerServiceProvider());
-$app->register(new Provider\TwigServiceProvider());
-$app->register(new Provider\UrlGeneratorServiceProvider());
-
-$app->register(new Provider\WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => '/tmp/profiler',
-    'profiler.mount_prefix' => '/_profiler', // this is the default
-));
+$app = new AE2\Application(false);
 
 $app->post('/', function (Request $request) use ($app) {
     $remoteip    = ip2long($_SERVER['REMOTE_ADDR']);
@@ -46,14 +36,6 @@ $app->post('/', function (Request $request) use ($app) {
     }
 
     return new Response($buffer, $success ? 200 : 500);
-});
-
-$app->error(function (\Exception $e, $code) use ($app) {
-    if ($app['debug']) {
-        return;
-    }
-
-    return new Response($code);
 });
 
 $app->run();

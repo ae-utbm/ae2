@@ -26,38 +26,13 @@
  * @brief Page d'erreur HTTP 403
  */
 
-require_once __DIR__.'/vendor/autoload.php';
-
-use Silex\Application;
-use Silex\Provider;
+require_once __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-$topdir = __DIR__ . '/';
-
-require_once __DIR__ . '/include/site.inc.php';
-
-require_once __DIR__ . "/../include/lib/serviceprovider/PhpRendererServiceProvider.php";
-
-$app = new Silex\Application();
-$app['debug'] = true;
-
-$app->register(new Provider\ServiceControllerServiceProvider());
-$app->register(new Provider\TwigServiceProvider());
-$app->register(new Provider\UrlGeneratorServiceProvider());
-
-$app->register(new Provider\WebProfilerServiceProvider(), array(
-    'profiler.cache_dir' => '/tmp/profiler',
-    'profiler.mount_prefix' => '/_profiler', // this is the default
-));
-
-$app->register(new Provider\PhpRendererServiceProvider());
-
-$app->before(function (Request $request) {
-  $request->attributes->set('site', new site());
-}, Application::EARLY_EVENT);
+$app = new AE2\Application(true);
 
 $app->get('/', function (Request $request) use ($app) {
   $site = $request->attributes->get('site');
