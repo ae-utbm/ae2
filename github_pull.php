@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 $app = new AE2\Application(false);
 
 $app->post('/', function (Request $request) use ($app) {
-    $remoteip    = ip2long($_SERVER['REMOTE_ADDR']);
+    $remoteip    = ip2long($_SERVER['HTTP_X_FORWARDED_FOR']);
     $allowednet  = ip2long("192.30.252.0");
     $allowedmask = ip2long("255.255.252.0");
     
@@ -17,8 +17,8 @@ $app->post('/', function (Request $request) use ($app) {
     }
 
     $commands = array(
-      "git --git-dir=" . __DIR__ . "/.git/ checkout -B test",
-      "git --git-dir=" . __DIR__ . "/.git/ pull github test",
+      "git --git-dir=" . __DIR__ . "/.git/ reset --hard HEAD",
+      "git --git-dir=" . __DIR__ . "/.git/ pull origin master",
     );
 
     $success = true;
