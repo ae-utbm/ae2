@@ -5,7 +5,15 @@ require_once __DIR__.'/vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-$app = new AE2\Application(false);
+$app = new Silex\Application();
+
+$app->error(function (\Exception $e, $code) use ($app) {
+    if ($app['debug']) {
+        return;
+    }
+
+    return new Response($code);
+});
 
 $app->post('/', function (Request $request) use ($app) {
     $remoteip    = ip2long($_SERVER['HTTP_X_FORWARDED_FOR']);
