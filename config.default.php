@@ -1,5 +1,7 @@
 <?php
 
+/* copy to config.php */
+
 define ("EBOUTIC_MERCHANT_ID", "");
 
 define ("MYSQL_PETITGENI_HOSTNAME", "");
