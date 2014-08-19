@@ -45,7 +45,7 @@ function check_user_is_ae_or_utbm(Request $request) {
   }
 }
 
-$app = new AE2\Application(true);
+$app = new AE2\Application();
 
 $app->get('/', function(Request $request) use ($app) {
   $site = $request->attributes->get('site');

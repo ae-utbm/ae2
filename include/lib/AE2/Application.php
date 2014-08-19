@@ -24,7 +24,8 @@
 
 namespace AE2;
 
-require __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../config.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Silex;
 
@@ -38,11 +39,11 @@ require_once __DIR__ . '/../../site.inc.php';
 
 class Application extends Silex\Application
 {
-	public function	__construct($debug = FALSE, array $values = array())
+	public function	__construct(array $values = array())
 	{
 		parent::__construct ($values);
 
-		$this ['debug'] = $debug;
+		$this ['debug'] = DEBUG;
 
 		$this->register (new Silex\Provider\DoctrineServiceProvider(), array(
 		    'db.options' => array(
@@ -54,23 +55,25 @@ class Application extends Silex\Application
 		    ),
 		));
 
-		$this->register(new Silex\Provider\ServiceControllerServiceProvider());
-		$this->register(new Silex\Provider\TwigServiceProvider());
-		$this->register(new Silex\Provider\UrlGeneratorServiceProvider());
-
-		$this->register(new Silex\Provider\WebProfilerServiceProvider(), array(
-		    'profiler.cache_dir' => '/tmp/profiler',
-		    'profiler.mount_prefix' => '/_profiler', // this is the default
-		));
-
 		$this->register(new Provider\PhpRendererServiceProvider());
+
+    if (TAISTE) {
+  		$this->register(new Silex\Provider\ServiceControllerServiceProvider());
+  		$this->register(new Silex\Provider\TwigServiceProvider());
+  		$this->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+  		$this->register(new Silex\Provider\WebProfilerServiceProvider(), array(
+  		    'profiler.cache_dir' => '/tmp/profiler',
+  		    'profiler.mount_prefix' => '/_profiler', // this is the default
+  		));
+    }
 
 		$this->before(function (Request $request) {
 			$request->attributes->set('site', new \site());
 		}, Application::EARLY_EVENT);
 
 		$this->error(function (\Exception $e, $code) use ($app) {
-		    if ($this['debug'])
+		    if (DEBUG)
 		        return;
 
 		    return new Response($code);

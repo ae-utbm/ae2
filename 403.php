@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-$app = new AE2\Application(true);
+$app = new AE2\Application();
 
 $app->get('/', function (Request $request) use ($app) {
   $site = $request->attributes->get('site');

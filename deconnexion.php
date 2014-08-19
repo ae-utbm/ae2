@@ -32,7 +32,7 @@ $topdir = __DIR__ . '/';
 
 require_once __DIR__ . '/include/entities/page.inc.php';
 
-$app = new AE2\Application(true);
+$app = new AE2\Application();
 
 $app->get('/', function (Request $request) use ($app) {
   $site = $request->attributes->get('site');

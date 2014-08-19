@@ -45,7 +45,7 @@ function check_user_is_gestion_ae_or_gestion_fimu(Request $request) {
   }
 }
 
-$app = new AE2\Application(true);
+$app = new AE2\Application();
 
 $app->get('/', function(Request $request) use ($app) {
   $site = $request->attributes->get('site');

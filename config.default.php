@@ -2,6 +2,9 @@
 
 /* copy to config.php */
 
+define ("DEBUG", FALSE);
+define ("TAISTE", TRUE);
+
 define ("EBOUTIC_MERCHANT_ID", "");
 
 define ("MYSQL_PETITGENI_HOSTNAME", "");
