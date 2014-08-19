@@ -9,5 +9,8 @@ Vagrantfile
 /composer.phar
 
 ## Site AE
-config.php
-include/mysqlae_home.inc.php
+/config.php
+/accounts
+/data
+/redmine
+/include/mysqlae_home.inc.php
